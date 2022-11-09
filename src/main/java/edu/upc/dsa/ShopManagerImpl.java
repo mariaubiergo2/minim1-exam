@@ -1,48 +1,48 @@
 package edu.upc.dsa;
 
-import edu.upc.dsa.models.Track;
+import edu.upc.dsa.models.User;
 
 import java.util.LinkedList;
 import java.util.List;
 import org.apache.log4j.Logger;
 
-public class TracksManagerImpl implements TracksManager {
-    private static TracksManager instance;
-    protected List<Track> tracks;
-    final static Logger logger = Logger.getLogger(TracksManagerImpl.class);
+public class ShopManagerImpl implements ShopManager {
+    private static ShopManager instance;
+    protected List<User> users;
+    final static Logger logger = Logger.getLogger(ShopManagerImpl.class);
 
-    private TracksManagerImpl() {
-        this.tracks = new LinkedList<>();
+    public ShopManagerImpl() {
+        this.users = new LinkedList<>();
     }
 
-    public static TracksManager getInstance() {
-        if (instance==null) instance = new TracksManagerImpl();
+    public static ShopManager getInstance() {
+        if (instance==null) instance = new ShopManagerImpl();
         return instance;
     }
 
     public int size() {
-        int ret = this.tracks.size();
+        int ret = this.users.size();
         logger.info("size " + ret);
 
         return ret;
     }
 
-    public Track addTrack(Track t) {
+    public User addUser(User t) {
         logger.info("new Track " + t);
 
-        this.tracks.add (t);
+        this.users.add (t);
         logger.info("new Track added");
         return t;
     }
 
-    public Track addTrack(String title, String singer) {
-        return this.addTrack(new Track(title, singer));
+    public User addUser(String title, String singer) {
+        return this.addUser(new User(title, singer));
     }
 
-    public Track getTrack(String id) {
+    public User getTrack(String id) {
         logger.info("getTrack("+id+")");
 
-        for (Track t: this.tracks) {
+        for (User t: this.users) {
             if (t.getId().equals(id)) {
                 logger.info("getTrack("+id+"): "+t);
 
@@ -54,26 +54,26 @@ public class TracksManagerImpl implements TracksManager {
         return null;
     }
 
-    public List<Track> findAll() {
-        return this.tracks;
+    public List<User> findAll() {
+        return this.users;
     }
 
     @Override
     public void deleteTrack(String id) {
 
-        Track t = this.getTrack(id);
+        User t = this.getTrack(id);
         if (t==null) {
             logger.warn("not found " + t);
         }
         else logger.info(t+" deleted ");
 
-        this.tracks.remove(t);
+        this.users.remove(t);
 
     }
 
     @Override
-    public Track updateTrack(Track p) {
-        Track t = this.getTrack(p.getId());
+    public User updateTrack(User p) {
+        User t = this.getTrack(p.getId());
 
         if (t!=null) {
             logger.info(p+" rebut!!!! ");

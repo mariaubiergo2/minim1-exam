@@ -1,9 +1,10 @@
 package edu.upc.dsa.services;
 
 
-import edu.upc.dsa.TracksManager;
-import edu.upc.dsa.TracksManagerImpl;
-import edu.upc.dsa.models.Track;
+import edu.upc.dsa.ShopManager;
+import edu.upc.dsa.ShopManagerImpl;
+import edu.upc.dsa.models.User;
+import edu.upc.dsa.models.VOuser;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -13,21 +14,26 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
 import java.util.List;
 
-@Api(value = "/tracks", description = "Endpoint to Track Service")
-@Path("/tracks")
-public class TracksService {
+@Api(value = "/shop")
+@Path("/shop")
+public class ShopService {
+    private ShopManager manager;
 
-    private TracksManager tm;
+    public ShopService() {
+        this.manager = ShopManagerImpl.getInstance();
 
-    public TracksService() {
-        this.tm = TracksManagerImpl.getInstance();
-        if (tm.size()==0) {
-            this.tm.addTrack("La Barbacoa", "Georgie Dann");
-            this.tm.addTrack("Despacito", "Luis Fonsi");
-            this.tm.addTrack("Enter Sandman", "Metallica");
+        if (manager.size()==0) {
+            this.manager.addUser(new VOuser("111","Marti","Ubiergo Gomez", "02/11/2001", "martini@gmail.com", "gats"));
+            this.manager.addUser(new VOuser("222","Laia", "Fonsi", "11/01/2001","lia@lalia.com", "gossos"));
+            this.manager.addUser(new VOuser("333","Biel",  "Fonsi", "01/12/2001", "aeros@love.com",  "dofins"));
+
+            this.manager.addObject(new Objecte("taula", "te potes", 50));
+            this.manager.addObject(new Objecte("jerro", "trencat", 2));
+            this.manager.addObject(new Objecte("Play", "aparell electronic", 149));
+            this.manager.addObject(new Objecte("prestatge", "Aguanta molt", 9));
+
         }
 
 
@@ -36,15 +42,15 @@ public class TracksService {
     @GET
     @ApiOperation(value = "get all Track", notes = "asdasd")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response = Track.class, responseContainer="List"),
+            @ApiResponse(code = 201, message = "Successful", response = User.class, responseContainer="List"),
     })
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTracks() {
 
-        List<Track> tracks = this.tm.findAll();
+        List<User> users = this.manager.findAll();
 
-        GenericEntity<List<Track>> entity = new GenericEntity<List<Track>>(tracks) {};
+        GenericEntity<List<User>> entity = new GenericEntity<List<User>>(users) {};
         return Response.status(201).entity(entity).build()  ;
 
     }
@@ -52,13 +58,13 @@ public class TracksService {
     @GET
     @ApiOperation(value = "get a Track", notes = "asdasd")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response = Track.class),
+            @ApiResponse(code = 201, message = "Successful", response = User.class),
             @ApiResponse(code = 404, message = "Track not found")
     })
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTrack(@PathParam("id") String id) {
-        Track t = this.tm.getTrack(id);
+        User t = this.manager.getTrack(id);
         if (t == null) return Response.status(404).build();
         else  return Response.status(201).entity(t).build();
     }
@@ -71,9 +77,9 @@ public class TracksService {
     })
     @Path("/{id}")
     public Response deleteTrack(@PathParam("id") String id) {
-        Track t = this.tm.getTrack(id);
+        User t = this.manager.getTrack(id);
         if (t == null) return Response.status(404).build();
-        else this.tm.deleteTrack(id);
+        else this.manager.deleteTrack(id);
         return Response.status(201).build();
     }
 
@@ -84,9 +90,9 @@ public class TracksService {
             @ApiResponse(code = 404, message = "Track not found")
     })
     @Path("/")
-    public Response updateTrack(Track track) {
+    public Response updateTrack(User user) {
 
-        Track t = this.tm.updateTrack(track);
+        User t = this.manager.updateTrack(user);
 
         if (t == null) return Response.status(404).build();
 
@@ -98,18 +104,18 @@ public class TracksService {
     @POST
     @ApiOperation(value = "create a new Track", notes = "asdasd")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response=Track.class),
+            @ApiResponse(code = 201, message = "Successful", response= User.class),
             @ApiResponse(code = 500, message = "Validation Error")
 
     })
 
     @Path("/")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response newTrack(Track track) {
+    public Response newTrack(User user) {
 
-        if (track.getSinger()==null || track.getTitle()==null)  return Response.status(500).entity(track).build();
-        this.tm.addTrack(track);
-        return Response.status(201).entity(track).build();
+        if (user.getSinger()==null || user.getTitle()==null)  return Response.status(500).entity(user).build();
+        this.manager.addUser(user);
+        return Response.status(201).entity(user).build();
     }
 
 }

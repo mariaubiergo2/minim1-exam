@@ -40,7 +40,7 @@ public class ShopService {
     }
 
     @GET
-    @ApiOperation(value = "get all Track", notes = "asdasd")
+    @ApiOperation(value = "get all Users", notes = "")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Successful", response = User.class, responseContainer="List"),
     })
@@ -56,10 +56,10 @@ public class ShopService {
     }
 
     @GET
-    @ApiOperation(value = "get a Track", notes = "asdasd")
+    @ApiOperation(value = "get a User", notes = "asdasd")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Successful", response = User.class),
-            @ApiResponse(code = 404, message = "Track not found")
+            @ApiResponse(code = 404, message = "User not found")
     })
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -70,7 +70,7 @@ public class ShopService {
     }
 
     @DELETE
-    @ApiOperation(value = "delete a Track", notes = "asdasd")
+    @ApiOperation(value = "delete a Track", notes = "")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Successful"),
             @ApiResponse(code = 404, message = "Track not found")
@@ -84,7 +84,7 @@ public class ShopService {
     }
 
     @PUT
-    @ApiOperation(value = "update a Track", notes = "asdasd")
+    @ApiOperation(value = "update a User", notes = "asdasd")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Successful"),
             @ApiResponse(code = 404, message = "Track not found")
@@ -111,7 +111,7 @@ public class ShopService {
 
     @Path("/")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response newTrack(User user) {
+    public Response newTrack(VOuser user) {
 
         if (user.getSinger()==null || user.getTitle()==null)  return Response.status(500).entity(user).build();
         this.manager.addUser(user);

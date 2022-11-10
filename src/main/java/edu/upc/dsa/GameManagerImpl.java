@@ -10,40 +10,25 @@ import org.apache.log4j.Logger;
 
 import static java.lang.Integer.parseInt;
 
-public class ShopManagerImpl implements ShopManager {
-    private static ShopManager instance;
-    protected List<Player> players;
+public class GameManagerImpl implements GameManager {
+    private static GameManager instance;
     protected Map<String, Partida> partidasId;
     protected Map<String, Player> partidasPlayers;
     protected  List<Juego> juegos;
-    final static Logger logger = Logger.getLogger(ShopManagerImpl.class);
+    final static Logger logger = Logger.getLogger(GameManagerImpl.class);
 
-    public ShopManagerImpl() {
-        this.players = new LinkedList<>();
+    public GameManagerImpl() {
         this.partidasPlayers = new HashMap<>();
         this.partidasId = new HashMap<>();
         this.juegos= new ArrayList<>();
     }
 
-    public static ShopManager getInstance() {
-        if (instance==null) instance = new ShopManagerImpl();
+    public static GameManager getInstance() {
+        if (instance==null) instance = new GameManagerImpl();
         return instance;
     }
 
-    public int size() {
-        int ret = this.players.size();
-        logger.info("size " + ret);
 
-        return ret;
-    }
-
-    public Player addUser(Player t) {
-        logger.info("new Track " + t);
-
-        this.players.add (t);
-        logger.info("new Track added");
-        return t;
-    }
 
     @Override
     public Juego createJuego(String id, String description, int num) {
@@ -168,26 +153,25 @@ public class ShopManagerImpl implements ShopManager {
     }
 
     @Override
-    public List<Player> sortPlayers() {
-        List<User> list = new ArrayList<>(this.users.values());
+    public List<Player> sortPlayers(Juego juego) {
+        List<Player> list = new ArrayList<>(this.partidasPlayers.values());
+        List<Player> sorted = new ArrayList<>();
 
-        list.sort((User u1, User u2)-> {
-            int res = u1.getSurnames().compareToIgnoreCase(u2.getSurnames());
-            if (res == 0){
-                res = u1.getName().compareToIgnoreCase(u2.getName());
+        for(Player p: list){
+            if(this.partidasId.get(p.getPartidaActual()).equals(juego)){
+                sorted.add(p);
             }
-            return res;
-        });
+        }
 
-        return list;
-        return null;
+        sorted.sort((Player u1, Player u2)-> Integer.compare(u2.getPuntos(),u1.getPuntos()));
+
+        return sorted;
     }
 
-
-    public List<Player> findAll() {
-        return this.players;
+    @Override
+    public int sizeGames() {
+        return juegos.size();
     }
-
 
 
 }

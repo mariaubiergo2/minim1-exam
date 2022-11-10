@@ -6,7 +6,7 @@ import edu.upc.dsa.models.Player;
 
 import java.util.List;
 
-public interface ShopManager {
+public interface GameManager {
     public Juego createJuego (String id, String description, int num);
     public Partida inicioPartida(String idjuego, String iduser);
     public Partida getPartida(String idjuego, String iduser);
@@ -15,9 +15,7 @@ public interface ShopManager {
     public String puntuacionActual(String iduser);
     public Player nextLevel(String iduser, String fecha);
     public Player endPartida(String iduser);
-    public List<Player> sortPlayers();
-    public List<Player> findAll();
+    public List<Player> sortPlayers(Juego juego);
 
-
-    public int size();
+    public int sizeGames();
 }

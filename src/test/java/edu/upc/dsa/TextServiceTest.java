@@ -3,18 +3,21 @@ package edu.upc.dsa;
 import org.apache.log4j.Logger;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
 public class TextServiceTest {
-    final static Logger logger = Logger.getLogger(ShopManagerImpl.class);
-    ShopManager manager;
+    final static Logger logger = Logger.getLogger(GameManagerImpl.class);
+    GameManager manager;
 
     @Before
     public void setUp() {
-        manager = new ShopManagerImpl();
+        manager = new GameManagerImpl();
+
+        manager.createJuego("joc1","descr", 5);
 
     }
 
@@ -25,11 +28,14 @@ public class TextServiceTest {
     }
 
     @Test
-    public void addUser() {
+    public void addGame() {
         logger.info("--- Start of the test -  ---");
+
+        Assert.assertEquals(1,this.manager.sizeGames());
+
         logger.info("Condicions inicials: ");
         /*
-        Assert.assertEquals(3,this.manager.sizeUsers());
+
 
         logger.info("S'afegeix 1 usuari: Paula");
         this.manager.addUser(new VOuser("444","Paula","Zuckerberg", "23/05/2001", "paint@love.com",  "pandas"));

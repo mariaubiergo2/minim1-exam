@@ -1,10 +1,9 @@
 package edu.upc.dsa.services;
 
-
+/*
 import edu.upc.dsa.ShopManager;
 import edu.upc.dsa.ShopManagerImpl;
-import edu.upc.dsa.models.User;
-import edu.upc.dsa.models.VOuser;
+import edu.upc.dsa.models.Player;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -42,15 +41,15 @@ public class ShopService {
     @GET
     @ApiOperation(value = "get all Users", notes = "")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response = User.class, responseContainer="List"),
+            @ApiResponse(code = 201, message = "Successful", response = Player.class, responseContainer="List"),
     })
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTracks() {
 
-        List<User> users = this.manager.findAll();
+        List<Player> players = this.manager.findAll();
 
-        GenericEntity<List<User>> entity = new GenericEntity<List<User>>(users) {};
+        GenericEntity<List<Player>> entity = new GenericEntity<List<Player>>(players) {};
         return Response.status(201).entity(entity).build()  ;
 
     }
@@ -58,13 +57,13 @@ public class ShopService {
     @GET
     @ApiOperation(value = "get a User", notes = "asdasd")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response = User.class),
+            @ApiResponse(code = 201, message = "Successful", response = Player.class),
             @ApiResponse(code = 404, message = "User not found")
     })
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTrack(@PathParam("id") String id) {
-        User t = this.manager.getTrack(id);
+        Player t = this.manager.getTrack(id);
         if (t == null) return Response.status(404).build();
         else  return Response.status(201).entity(t).build();
     }
@@ -77,7 +76,7 @@ public class ShopService {
     })
     @Path("/{id}")
     public Response deleteTrack(@PathParam("id") String id) {
-        User t = this.manager.getTrack(id);
+        Player t = this.manager.getTrack(id);
         if (t == null) return Response.status(404).build();
         else this.manager.deleteTrack(id);
         return Response.status(201).build();
@@ -90,9 +89,9 @@ public class ShopService {
             @ApiResponse(code = 404, message = "Track not found")
     })
     @Path("/")
-    public Response updateTrack(User user) {
+    public Response updateTrack(Player player) {
 
-        User t = this.manager.updateTrack(user);
+        Player t = this.manager.updateTrack(player);
 
         if (t == null) return Response.status(404).build();
 
@@ -104,7 +103,7 @@ public class ShopService {
     @POST
     @ApiOperation(value = "create a new Track", notes = "asdasd")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response= User.class),
+            @ApiResponse(code = 201, message = "Successful", response= Player.class),
             @ApiResponse(code = 500, message = "Validation Error")
 
     })
@@ -119,3 +118,5 @@ public class ShopService {
     }
 
 }
+
+ */

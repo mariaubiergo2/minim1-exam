@@ -1,5 +1,5 @@
->> Nombre:	Maria Ubiergo Gomez
->> Grupo:	5M11
+>> Nom:	Maria Ubiergo Gomez
+>> Grup:	5M11
 >> github: 	https://github.com/mariaubiergo2/minim1-exam.git
 
 
@@ -8,7 +8,7 @@
 		 Els VO són Value Objects, objectes de transferència.
 	>> (2) La interfície "Manager.java" especifíca les operacions necessàries.
 	>> (3) "ManagerImpl.java" les realitza.
-	>> (4) "ObjetoManagerImpl.java" desarrolla estas operaciones necesarias.
+	>> (4) La cl"ObjetoManagerImpl.java" desarrolla estas operaciones necesarias.
 	>> (5) Contenedores ...
 		>> El contenedor de recetas es una lista implementada como un array (ArrayList).
 		>> El contenedor de productos de una receta es una lista encadenada (LinkedList).

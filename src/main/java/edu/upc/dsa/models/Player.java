@@ -7,67 +7,60 @@ import java.util.List;
 
 public class Player {
     String username;
-    String partidaActual;
-    Integer puntos;
-    Integer nivelActual;
-    LinkedList<String> performance;
-
+    Boolean currentlyPlaying;
+    List<Partida> partidasJugadas; //string = namejuego; Partida = partida.
 
     public Player() {
         //this.id = RandomUtils.getId();
     }
 
-    public Player(String username, String partidaActual, Integer puntos) {
+    public Player(String username) {
         this.setUsername(username);
-        this.setPartidaActual(partidaActual);
-        this.setNivelActual(1);
-        this.setPuntos(50);
-        this.performance = (new LinkedList<String>());
+        this.setCurrentlyPlaying(false);
+        this.setPartidasJugadas();
     }
 
-    public Integer getNivelActual() {
-        return nivelActual;
-    }
-
-    public void setNivelActual(Integer nivelActual) {
-        this.nivelActual = nivelActual;
-    }
 
     public String getUsername() {
         return username;
     }
-
     public void setUsername(String username) {
         this.username = username;
     }
 
-    public String getPartidaActual() {
-        return partidaActual;
+    public List<Partida> getPartidasJugadas() {
+        return partidasJugadas;
+    }
+    public List<Partida> getPartidasJugadas(String namejuego) {
+        List<Partida> result = new ArrayList<>();
+        for(Partida p : partidasJugadas){
+            if(p.getNamejuego().equals(namejuego))
+                result.add(p);
+        }
+        return result;
     }
 
-    public void setPartidaActual(String partidaActual) {
-        this.partidaActual = partidaActual;
+    public void setPartidasJugadas() {
+        this.partidasJugadas = new LinkedList<>();
     }
 
-    public Integer getPuntos() {
-        return puntos;
+    public Boolean getCurrentlyPlaying() {
+        return currentlyPlaying;
     }
 
-    public void setPuntos(Integer puntos) {
-        this.puntos = puntos;
+    public void setCurrentlyPlaying(Boolean currentlyPlaying) {
+        this.currentlyPlaying = currentlyPlaying;
     }
 
-    public LinkedList<String> getPerformance() {
-        return performance;
+    public void addPartida(Partida partida){
+        this.partidasJugadas.add(partida);
+        this.setCurrentlyPlaying(true);
     }
 
-    public void setPerformance(String level) {
-        this.performance.add(level);
-    }
 
     @Override
     public String toString() {
-        return "Player [username=" + username + ", partidaAct=" + partidaActual+ ", puntos=" + puntos+", nivelAct=" + nivelActual+ ", performance=" + performance+"]";
+        return "Player [username=" + username +"]";
     }
 
 

@@ -17,8 +17,8 @@ public class TextServiceTest {
     public void setUp() {
         manager = new GameManagerImpl();
 
-        manager.createJuego("joc1","descr", 5);
-
+        manager.createJuego("pichi","com el beisball", 5);
+        manager.createJuego("so-pa-po","el matias sempre guanya", 2);
     }
 
     @After
@@ -33,10 +33,11 @@ public class TextServiceTest {
 
         Assert.assertEquals(1,this.manager.sizeGames());
 
-        logger.info("Condicions inicials: ");
+        logger.info("Afegim un joc:");
+        manager.createJuego("mata conills","matar", 10);
+
+        Assert.assertEquals(2,this.manager.sizeGames());
         /*
-
-
         logger.info("S'afegeix 1 usuari: Paula");
         this.manager.addUser(new VOuser("444","Paula","Zuckerberg", "23/05/2001", "paint@love.com",  "pandas"));
 
@@ -44,8 +45,19 @@ public class TextServiceTest {
          */
     }
     @Test
-    public void logIn() {
-        logger.info("--- Start of the test - LogIn ---");
+    public void inicioPartida() {
+        logger.info("--- Start of the test - Iniciar partida ---");
+        manager.iniciarPartida("so-pa-po", "matias");
+
+        logger.info("Matias intenta de iniciar otra partida mientras ya esta jugando a una:");
+        manager.iniciarPartida("pichi", "matias");
+
+        logger.info("Matias quiere saber en que nivel esta:");
+        manager.getNivelActual("matias");
+
+        logger.info("Matias quiere saber cuantos puntos tiene:");
+        manager.getPuntuacionActual("matias");
+
     }
 
     @Test

@@ -40,6 +40,6 @@ public class Juego {
 
     @Override
     public String toString() {
-        return "Juego [name=" + namejuego + ", description=" + descripcio +", niveles=" + numniveles +"]";
+        return "Juego [name = " + namejuego + ", description = " + descripcio +", niveles = " + numniveles +"]";
     }
 }

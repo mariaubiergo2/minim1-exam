@@ -2,59 +2,83 @@ package edu.upc.dsa.models;
 
 import edu.upc.dsa.util.RandomUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Partida {
-    String id;
+    String idpartida;
     String username;
-    String juego;
-    Boolean currentlyPlaying;
+    String namejuego;
+    Integer puntos;
+    Integer nivelActual;
+    List<VOPerformance> performanceList;
 
     public Partida() {
         //this.id = RandomUtils.getId();
     }
 
-    public Partida(String username, String juego) {
-        this.id = RandomUtils.getId();
+    public Partida(String username, String namejuego) {
+        this.idpartida = RandomUtils.getId();
         this.setUsername(username);
-        this.setJuego(juego);
-        this.setCurrentlyPlaying(true);
-
+        this.setNamejuego(namejuego);
+        this.setPuntos(50);
+        this.setNivelActual(1);
+        this.setPerformanceList(new ArrayList<VOPerformance>());
     }
 
-    public String getId() {
-        return id;
-    }
 
-    public void setId(String id) {
-        this.id = id;
+    public String getIdpartida() {
+        return idpartida;
+    }
+    public void setIdpartida(String idpartida) {
+        this.idpartida = idpartida;
     }
 
     public String getUsername() {
         return username;
     }
-
     public void setUsername(String username) {
         this.username = username;
     }
 
-    public String getJuego() {
-        return juego;
+    public String getNamejuego() {
+        return namejuego;
+    }
+    public void setNamejuego(String juego) {
+        this.namejuego = juego;
     }
 
-    public Boolean getCurrentlyPlaying() {
-        return currentlyPlaying;
+    public Integer getPuntos() {
+        return puntos;
     }
 
-    public void setCurrentlyPlaying(Boolean currentlyPlaying) {
-        this.currentlyPlaying = currentlyPlaying;
+    public void setPuntos(Integer puntos) {
+        this.puntos = puntos;
     }
 
-    public void setJuego(String juego) {
-        this.juego = juego;
+    public Integer getNivelActual() {
+        return nivelActual;
+    }
+
+    public void setNivelActual(Integer nivelActual) {
+        this.nivelActual = nivelActual;
+    }
+
+    public List<VOPerformance> getPerformanceList() {
+        return performanceList;
+    }
+
+    public void setPerformanceList(List<VOPerformance> performanceList) {
+        this.performanceList = performanceList;
+    }
+
+    public void addPerformance(VOPerformance performance){
+        this.performanceList.add(performance);
     }
 
     @Override
     public String toString() {
-        return "Partida [ idpartida= "+id+" iduser="+username+", title=" + username + ", idjuego=" + juego+ ", currentlyplaying=" + currentlyPlaying +"]";
+        return "Partida [ idpartida= "+ idpartida +", iduser = "+username+", juego = " + namejuego + ", puntos = " + puntos+ ", nivel actual = " + nivelActual +"]";
     }
 
 }

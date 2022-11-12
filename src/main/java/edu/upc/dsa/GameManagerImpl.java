@@ -12,14 +12,12 @@ import static java.lang.Integer.parseInt;
 
 public class GameManagerImpl implements GameManager {
     private static GameManager instance;
-    protected Map<String, Partida> partidasId;
-    protected Map<String, Player> partidasPlayers;
-    protected  List<Juego> juegos;
+    protected Map<String, Player> playersList; //string = username; Player = player
+    protected  List<Juego> juegos; // catalogo de juegos
     final static Logger logger = Logger.getLogger(GameManagerImpl.class);
 
     public GameManagerImpl() {
-        this.partidasPlayers = new HashMap<>();
-        this.partidasId = new HashMap<>();
+        this.playersList = new HashMap<>();
         this.juegos= new ArrayList<>();
     }
 
@@ -28,10 +26,13 @@ public class GameManagerImpl implements GameManager {
         return instance;
     }
 
-
-
     @Override
     public Juego createJuego(String id, String description, int num) {
+        Juego j = getJuego(id);
+        if (j!=null){
+            logger.info("There is already a game called: "+id);
+            return null;
+        }
         Juego g = new Juego(id, description, num);
         juegos.add(g);
         logger.info("New juego: "+g);
@@ -39,32 +40,76 @@ public class GameManagerImpl implements GameManager {
     }
 
     @Override
-    public Partida inicioPartida(String idjuego, String iduser) {
-        Partida pp = this.getPartida(idjuego, iduser);
-        if (pp!=null){
-            if(pp.getCurrentlyPlaying()){
-                logger.info("This user is currently playing");
+    public Partida iniciarPartida(String idjuego, String iduser) {
+        Juego j = getJuego(idjuego);
+        if (j==null){
+            return null;
+        }
+        Player player = this.playersList.get(iduser);
+        if (player==null){
+            Player newplayer = new Player(iduser);
+            logger.info("New player: "+newplayer);
+            this.playersList.put(iduser, newplayer);
+        }else{
+            if(player.getCurrentlyPlaying()){
+                logger.info("This player is currently playing");
                 return null;
             }
         }
-        for(Juego j : juegos){
-            if (j.getNamejuego().equals(idjuego)){
-                Partida createdPartida = new Partida(iduser, idjuego);
-                this.partidasId.put(createdPartida.getId(), createdPartida);
-                this.partidasPlayers.put(createdPartida.getId(), new Player(iduser, pp.getId(), 50));
-                logger.info("New partida:"+createdPartida);
-                return createdPartida;
-            }
+        Partida newpartida = new Partida(iduser, idjuego);
+        this.playersList.get(iduser).addPartida(newpartida);
+        logger.info("New partida: "+newpartida);
+        logger.info(this.playersList.get(iduser).getCurrentlyPlaying().toString());
+
+        return newpartida;
+    }
+
+    @Override
+    public String getNivelActual(String iduser) {
+        Partida p = getPartidaActual(iduser);
+        if(p!=null){
+            logger.info("You are in level "+p.getNivelActual().toString());
+            return p.getNivelActual().toString();
         }
-        logger.info("This game does not exist");
         return null;
     }
 
     @Override
+    public String getPuntuacionActual(String iduser) {
+        Partida p = getPartidaActual(iduser);
+        if(p!=null){
+            logger.info("You have "+p.getPuntos().toString()+" points!");
+            return p.getPuntos().toString();
+        }
+        return null;
+    }
+
+    @Override
+    public Player nextLevel(String iduser, Integer newpuntos, String fecha) {
+        Partida p = getPartidaActual(iduser);
+        if(p!=null){
+            if(p.getNivelActual()==getJuego(p.getNamejuego()).getNumniveles()){
+
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Player endPartida(String iduser) {
+        return null;
+    }
+
+    @Override
+    public List<Player> sortPlayers(Juego juego) {
+        return null;
+    }
+/*
+    @Override
     public Partida getPartida(String idjuego, String iduser) {
         for(Map.Entry<String, Player> entry : this.partidasPlayers.entrySet()){
             if(entry.getValue().getUsername().equals(iduser)){
-                if(this.partidasId.get(entry.getKey()).getJuego().equals(idjuego)){
+                if(this.partidasId.get(entry.getKey()).getNamejuego().equals(idjuego)){
                     logger.info("Partida matching user and game found!");
                     return this.partidasId.get(entry.getValue());
                 }
@@ -83,8 +128,8 @@ public class GameManagerImpl implements GameManager {
             if (p!=null){
                 logger.info("There is a partida "+p);
                 if(p.getCurrentlyPlaying()){
-                    logger.info("Nice search! "+this.partidasPlayers.get(p.getId()));
-                    return this.partidasPlayers.get(p.getId());
+                    logger.info("Nice search! "+this.partidasPlayers.get(p.getIdpartida()));
+                    return this.partidasPlayers.get(p.getIdpartida());
                 }
             }
         }
@@ -120,7 +165,7 @@ public class GameManagerImpl implements GameManager {
             Player play = getCurrentlyPlayingPlayer(iduser);
             logger.info("Before passing the level: "+play);
 
-            String idjuego = partidasId.get(play.getPartidaActual()).getJuego();
+            String idjuego = partidasId.get(play.getPartidaActual()).getNamejuego();
             for (Juego j : juegos){
                 if(j.getNamejuego().equals(idjuego)){
                     logger.info(iduser+" is playing to "+j);
@@ -168,8 +213,59 @@ public class GameManagerImpl implements GameManager {
         return sorted;
     }
 
+ */
+
+    @Override
+    public Juego getJuego(String namejuego) {
+        logger.info("Looking for a game called: "+namejuego);
+        for (Juego j : this.juegos){
+            if(j.getNamejuego().equals(namejuego)){
+                logger.info(j);
+                return j;
+            }
+        }
+        logger.info("There is no game called: "+namejuego);
+        return null;
+    }
+
+    @Override
+    public Player getPlayer(String username) {
+        return this.playersList.get(username);
+    }
+
+    @Override
+    public Partida getPartida(String idjuego, String iduser) {
+        Juego j = getJuego(idjuego);
+        if(j!=null){
+            Player player = this.playersList.get(iduser);
+            if (player!=null){
+                List<Partida> partidas = player.getPartidasJugadas(idjuego);
+                logger.info(partidas.get(partidas.size()-1));
+                return partidas.get(partidas.size()-1);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Partida getPartidaActual(String username) {
+        Player player = getPlayer(username);
+        if (player==null){
+            logger.info("This player does not exist");
+            return null;
+        }
+        if (player.getCurrentlyPlaying()){
+            Partida p = player.getPartidasJugadas().get(player.getPartidasJugadas().size()-1);
+            return p;
+        }
+        logger.info("You are not playing right now!");
+        return null;
+    }
+
+
     @Override
     public int sizeGames() {
+        logger.info("There are "+juegos.size()+" juegos");
         return juegos.size();
     }
 

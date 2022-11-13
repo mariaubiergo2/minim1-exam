@@ -33,7 +33,7 @@ public class GameManagerImpl implements GameManager {
     }
 
     @Override
-    public Juego createJuego(String id, String description, int num)  {
+    public Juego createJuego(String id, String description, Integer num)  {
         try {
             Juego j = getJuego(id);
         } catch (JuegoDoesNotExistException e){
@@ -107,6 +107,7 @@ public class GameManagerImpl implements GameManager {
             this.playersList.get(iduser).getPartidasJugadas().get(p.getIdpartida()).sumNivelActual(1);
 
             logger.info("Performance actual: "+this.playersList.get(iduser).getPartidasJugadas().get(p.getIdpartida()).getPerformanceList());
+            return this.playersList.get(iduser);
         }
         return null;
     }
@@ -123,19 +124,22 @@ public class GameManagerImpl implements GameManager {
     }
 
     @Override
-    public List<Player> sortPlayers(Juego juego) throws JuegoDoesNotExistException, PlayerDoesNotExistException {
+    public List<Player> sortPlayers(Juego juego) throws JuegoDoesNotExistException {
         Juego jj = getJuego(juego.getNamejuego());
         List<Partida> partidaJuego = new ArrayList<>();
         for(Map.Entry<String , Player> entry : this.playersList.entrySet()){
-            Partida p = getPartida(juego.getNamejuego(), entry.getKey());
-            if(p!=null)
-                partidaJuego.add(p);
+            try {
+                Partida p = getPartida(juego.getNamejuego(), entry.getKey());
+                if (p!=null)
+                    partidaJuego.add(p);
+            } catch (PlayerDoesNotExistException e) {
+            }
         }
         if(partidaJuego.size()!=0){
             partidaJuego.sort((Partida p1, Partida p2) -> Integer.compare(p2.getPuntos(),p1.getPuntos()));
             List<Player> result = new ArrayList<>();
             for(Partida partida : partidaJuego){
-                result.add(getPlayer(partida.getUsername()));
+                result.add(this.playersList.get(partida.getUsername()));
             }
             return result;
         }
@@ -146,16 +150,14 @@ public class GameManagerImpl implements GameManager {
     @Override
     public List<Partida> getPartidasPlayer(String username) throws PlayerDoesNotExistException {
         List<Partida> list = getPlayer(username).getPartidasJugadas().values().stream().collect(toList());
-        if (list.size()!=0){
-            logger.info("There are "+list.size()+ " partidas of this player");
-            return list;
-        }
-        logger.info("This player has not played");
-        return null;
+
+        logger.info("There are "+list.size()+ " partidas of this player");
+        return list;
+
     }
 
     @Override
-    public List<VOPerformance> getPerformance(String idjuego, String iduser) throws JuegoDoesNotExistException {
+    public List<VOPerformance> getPerformance(String idjuego, String iduser) throws JuegoDoesNotExistException, PlayerDoesNotExistException {
         List<VOPerformance> list = getPartida(idjuego, iduser).getPerformanceList();
         if(list.size()!=0){
             for (VOPerformance perf : list)
@@ -188,16 +190,16 @@ public class GameManagerImpl implements GameManager {
     }
 
     @Override
-    public Partida getPartida(String idjuego, String iduser) throws JuegoDoesNotExistException {
+    public Partida getPartida(String idjuego, String iduser) throws JuegoDoesNotExistException, PlayerDoesNotExistException {
         List<Partida> list = getPartidas(idjuego, iduser);
-        if (list!=null) {
+        if (list.size()!=0) {
             return list.get(list.size()-1);
         }
         return null;
     }
 
     @Override
-    public List<Partida> getPartidas(String idjuego, String iduser) throws JuegoDoesNotExistException {
+    public List<Partida> getPartidas(String idjuego, String iduser) throws JuegoDoesNotExistException, PlayerDoesNotExistException {
         Juego j = getJuego(idjuego);
         if(j==null){
             return null;
@@ -205,7 +207,7 @@ public class GameManagerImpl implements GameManager {
         Player player = this.playersList.get(iduser);
         if (player==null){
             logger.info("This player does not exist, yet");
-            return null;
+            throw new PlayerDoesNotExistException();
         }
         HashMap<String, Partida> partidas = player.getPartidasJugadas();
         List<Partida> partidasplayed = new ArrayList<>();

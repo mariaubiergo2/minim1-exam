@@ -3,6 +3,7 @@ package edu.upc.dsa;
 import edu.upc.dsa.models.Juego;
 import edu.upc.dsa.models.Partida;
 import edu.upc.dsa.models.Player;
+import edu.upc.dsa.models.VOPerformance;
 
 import java.util.List;
 
@@ -31,19 +32,16 @@ public interface GameManager {
     public List<Player> sortPlayers(Juego juego);
 
     // OP8: Consulta de las partidas en las que ha participado un usuario
+    public List<Partida> getPartidasPlayer(String username);
 
     // OP9: Consulta de la actividad de un usuario sobre un juego
-
+    public List<VOPerformance> getPerformance(String idjuego, String iduser);
 
     public Juego getJuego(String namejuego);
     public Player getPlayer(String username);
     public Partida getPartida (String idjuego, String iduser);
+    public List<Partida> getPartidas (String idjuego, String iduser);
     public Partida getPartidaActual (String username);
-
-
-
-
-
 
     public int sizeGames();
 }

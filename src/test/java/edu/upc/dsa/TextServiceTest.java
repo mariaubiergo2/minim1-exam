@@ -19,6 +19,7 @@ public class TextServiceTest {
 
         manager.createJuego("pichi","com el beisball", 5);
         manager.createJuego("so-pa-po","el matias sempre guanya", 2);
+        manager.iniciarPartida("so-pa-po", "alex");
     }
 
     @After
@@ -57,6 +58,25 @@ public class TextServiceTest {
 
         logger.info("Matias quiere saber cuantos puntos tiene:");
         manager.getPuntuacionActual("matias");
+
+        logger.info("Vamos a mirar en que partida esta matias:");
+        manager.getPartida("so-pa-po", "matias");
+        manager.getPartida("pichi", "matias");
+
+        logger.info("Vamos a mirar en que partida esta matias:");
+        manager.getPartidaActual("matias");
+
+        manager.endPartida("matias");
+
+        logger.info("Vamos a volver a mirar en que partida esta matias:");
+        manager.getPartidaActual("matias");
+
+        logger.info("Matias quiere volver a saber en que nivel esta:");
+        manager.getNivelActual("matias");
+
+        logger.info("Matias quiere volver a saber cuantos puntos tiene:");
+        manager.getPuntuacionActual("matias");
+
 
     }
 

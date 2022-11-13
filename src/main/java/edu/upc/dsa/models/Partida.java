@@ -51,27 +51,27 @@ public class Partida {
     public Integer getPuntos() {
         return puntos;
     }
-
     public void setPuntos(Integer puntos) {
         this.puntos = puntos;
+    }
+    public void addPuntos(Integer puntos ) {
+        this.puntos = this.puntos + puntos;
     }
 
     public Integer getNivelActual() {
         return nivelActual;
     }
-
     public void setNivelActual(Integer nivelActual) {
         this.nivelActual = nivelActual;
     }
+    public void sumNivelActual(Integer numerodenivelesquesubes) {this.nivelActual=this.nivelActual+numerodenivelesquesubes; }
 
     public List<VOPerformance> getPerformanceList() {
         return performanceList;
     }
-
     public void setPerformanceList(List<VOPerformance> performanceList) {
         this.performanceList = performanceList;
     }
-
     public void addPerformance(VOPerformance performance){
         this.performanceList.add(performance);
     }

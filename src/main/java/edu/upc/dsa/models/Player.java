@@ -8,7 +8,9 @@ import java.util.List;
 public class Player {
     String username;
     Boolean currentlyPlaying;
-    List<Partida> partidasJugadas; //string = namejuego; Partida = partida.
+    HashMap<String, Partida> partidasJugadas; //string = idPartida; Partida = partida.
+
+    //HashMap<String, List<String>> juegosJugados; //string= namejuego; List = list idpartidas.
 
     public Player() {
         //this.id = RandomUtils.getId();
@@ -28,20 +30,12 @@ public class Player {
         this.username = username;
     }
 
-    public List<Partida> getPartidasJugadas() {
+    public HashMap<String, Partida> getPartidasJugadas() {
         return partidasJugadas;
-    }
-    public List<Partida> getPartidasJugadas(String namejuego) {
-        List<Partida> result = new ArrayList<>();
-        for(Partida p : partidasJugadas){
-            if(p.getNamejuego().equals(namejuego))
-                result.add(p);
-        }
-        return result;
     }
 
     public void setPartidasJugadas() {
-        this.partidasJugadas = new LinkedList<>();
+        this.partidasJugadas = new HashMap<>();
     }
 
     public Boolean getCurrentlyPlaying() {
@@ -53,7 +47,7 @@ public class Player {
     }
 
     public void addPartida(Partida partida){
-        this.partidasJugadas.add(partida);
+        this.partidasJugadas.put(partida.getIdpartida(), partida);
         this.setCurrentlyPlaying(true);
     }
 

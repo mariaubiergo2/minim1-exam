@@ -1,19 +1,20 @@
 package edu.upc.dsa.models;
 
-import edu.upc.dsa.util.RandomUtils;
-
 public class VOPerformance {
+    //Como abandonas un nivel. Ejemplo:
+    //level: 1, points: 5, date: 05-10-2001
+    //Indica que has terminado el nivel 1 el dia 05-10-2001 con 5 puntos
     Integer level;
-    Integer puntos;
+    Integer points;
     String date;
 
     public VOPerformance() {
         //this.id = RandomUtils.getId();
     }
 
-    public VOPerformance(Integer level, Integer puntos, String date) {
+    public VOPerformance(Integer level, Integer points, String date) {
         this.setLevel(level);
-        this.setPuntos(puntos);
+        this.setPoints(points);
         this.setDate(date);
     }
 
@@ -25,12 +26,12 @@ public class VOPerformance {
         this.level = level;
     }
 
-    public Integer getPuntos() {
-        return puntos;
+    public Integer getPoints() {
+        return points;
     }
 
-    public void setPuntos(Integer puntos) {
-        this.puntos = puntos;
+    public void setPoints(Integer points) {
+        this.points = points;
     }
 
     public String getDate() {
@@ -43,7 +44,7 @@ public class VOPerformance {
 
     @Override
     public String toString() {
-        return "Performance [ level = "+ level +" puntos = "+puntos+", date = " +date+"]";
+        return "Performance [ level = "+ level +" puntos = "+ points +", date = " +date+"]";
     }
 
 }
